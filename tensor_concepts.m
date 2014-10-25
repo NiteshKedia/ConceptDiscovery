@@ -5,7 +5,7 @@
 %     triplets{i,2} = verb{i};
 %     triplets{i,3} = obj{i};
 % end 
-%Git testing
+%Git testing from lab
 clear all; clc;
 load triplets.mat; load subjects.mat; load verbs.mat; load objects.mat;
 ns = length(sub);
