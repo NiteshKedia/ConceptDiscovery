@@ -40,7 +40,7 @@ end
 count=count+i;
 for i=1:length(relevant_unique_verbobj)
     i
-    overlap_sub =  unique_triplet_annotated(intersect(find(unique_triplet_annotated(:,2)==relevant_unique_verbobj(i,1)),find(unique_triplet_annotated(:,3)==relevant_unique_subverb(i,2))),1);
+    overlap_sub =  unique_triplet_annotated(intersect(find(unique_triplet_annotated(:,2)==relevant_unique_verbobj(i,1)),find(unique_triplet_annotated(:,3)==relevant_unique_verbobj(i,2))),1);
     tripcomp_1_sub(count+i,overlap_sub)=1;
     tripcomp_1_verb(count+i,relevant_unique_verbobj(i,1)) = 1 ;
     tripcomp_1_obj(count+i,relevant_unique_verbobj(i,2)) = 1 ;
