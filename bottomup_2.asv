@@ -7,20 +7,28 @@ tripcomp_2_obj =sparse(0,length(unique_obj));
 
 for i=1:num_components_iter1
     i
-    sub=find(tripcomp_1_sub(i,:));
-    verb=find(tripcomp_1_verb(i,:));
-    obj=find(tripcomp_1_obj(i,:));
+    [x,y,z]=find(tripcomp_1_sub(i,:));
+    sub=y;
+    [x,y,z]=find(tripcomp_1_verb(i,:));
+    verb=y;
+    [x,y,z]=find(tripcomp_1_obj(i,:));
+    obj=y;
    
-    sub_set = find(tripcomp_1_sub(:,sub));
-    verb_set = find(tripcomp_1_verb(:,verb));
-    obj_set  = find(tripcomp_1_obj(:,obj));
+    [x,y,z] = find(tripcomp_1_sub(:,sub));
+    sub_set=x;
+    [x,y,z] = find(tripcomp_1_verb(:,verb));
+    verb_set=x;
+    [x,y,z] = find(tripcomp_1_obj(:,obj));
+    obj_set= x;
     %sub
     candidate_set_sub=[];
     common_context_set=[];
-    same_subject_set=find(tripcomp_1_sub(:,sub(1)));
+    [x,y,z] = find(tripcomp_1_sub(:,sub(1)));
+    same_subject_set= x;
     if(length(sub)>1)
         for j=2:length(sub)
-        same_subject_set = intersect(same_subject_set,find(tripcomp_1_sub(:,sub(j))));
+            [x,y,z] = find(tripcomp_1_sub(:,sub(j)));
+            same_subject_set = intersect(same_subject_set,x);
         end
     end
     if(~isempty(same_subject_set))
@@ -31,10 +39,12 @@ for i=1:num_components_iter1
     
     %verb
     candidate_set_verb=[];
-    same_verb_set=find(tripcomp_1_verb(:,verb(1)));
+    [x,y,z] = find(tripcomp_1_verb(:,verb(1)));
+    same_verb_set=x;
     if(length(verb)>1)
         for j=2:length(verb)
-        same_verb_set = intersect(same_verb_set,find(tripcomp_1_verb(:,verb(j))));
+            [x,y,z] = find(tripcomp_1_verb(:,verb(j)));
+            same_verb_set = intersect(same_verb_set,x);
         end
     end
     if(~isempty(same_verb_set))
@@ -45,10 +55,12 @@ for i=1:num_components_iter1
     
     %obj
     candidate_set_obj=[];
-    same_object_set=find(tripcomp_1_obj(:,obj(1)));
+    [x,y,z] = find(tripcomp_1_obj(:,obj(1)));
+    same_object_set=x;
     if(length(obj)>1)
         for j=2:length(obj)
-        same_object_set = intersect(same_object_set,find(tripcomp_1_obj(:,obj(j))));
+            [x,y,z] = find(tripcomp_1_obj(:,obj(j)));
+            same_object_set = intersect(same_object_set,x);
         end
     end
     if(~isempty(same_object_set))
@@ -58,8 +70,24 @@ for i=1:num_components_iter1
     candidate_set_obj=union(candidate_set_obj,common_context_set);
     
     final_candidate_set = intersect(intersect(candidate_set_sub,candidate_set_verb),candidate_set_obj);
-    final_candidate_set = setdiff(final_candidate_set,[1:i]);
+    final_candidate_set = setdiff(final_candidate_set,1:i);
     count = count+length(final_candidate_set);
+    candidate_subs=[];
+    candidate_verb=[];
+    candidate_obj=[];
+    for k =1:length(final_candidate_set)
+        [x,y,z]=find(tripcomp_1_sub(final_candidate_set(k),:));
+        candidate_subs=union(candidate_subs,sub);
+        tripcomp_2_sub(count,)
+        [x,y,z]=find(tripcomp_1_verb(final_candidate_set(k),:));
+        candidate_verb=union(candidate_verb,sub);
+        [x,y,z]=find(tripcomp_1_obj(final_candidate_set(k),:));
+        candidate_obj=union(candidate_obj,sub);
+        
+    end
+    
+    
+%     tripcomp_2_sub = 
 %     clear candidate_set_sub candidate_set_verb candidate_set_obj common_context_set
     %Calculate cost of merge
 %     

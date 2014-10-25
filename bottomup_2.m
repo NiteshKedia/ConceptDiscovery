@@ -1,4 +1,4 @@
-count=0;
+count=1;
 num_components_iter1=size(tripcomp_1_sub,1);
 tripcomp_2_sub = sparse(0,length(unique_sub));
 tripcomp_2_verb =sparse(0,length(unique_verb));
@@ -7,20 +7,31 @@ tripcomp_2_obj =sparse(0,length(unique_obj));
 
 for i=1:num_components_iter1
     i
-    sub=find(tripcomp_1_sub(i,:));
-    verb=find(tripcomp_1_verb(i,:));
-    obj=find(tripcomp_1_obj(i,:));
+    [x,y,z]=find(tripcomp_1_sub(i,:));
+    sub=y;
+    sub_words = unique_sub(sub);
+    [x,y,z]=find(tripcomp_1_verb(i,:));
+    verb=y;
+    verb_words= unique_verb(verb);
+    [x,y,z]=find(tripcomp_1_obj(i,:));
+    obj=y;
+    obj_words = unique_obj(obj);
    
-    sub_set = find(tripcomp_1_sub(:,sub));
-    verb_set = find(tripcomp_1_verb(:,verb));
-    obj_set  = find(tripcomp_1_obj(:,obj));
+    [x,y,z] = find(tripcomp_1_sub(:,sub));
+    sub_set=x;
+    [x,y,z] = find(tripcomp_1_verb(:,verb));
+    verb_set=x;
+    [x,y,z] = find(tripcomp_1_obj(:,obj));
+    obj_set= x;
     %sub
     candidate_set_sub=[];
     common_context_set=[];
-    same_subject_set=find(tripcomp_1_sub(:,sub(1)));
+    [x,y,z] = find(tripcomp_1_sub(:,sub(1)));
+    same_subject_set= x;
     if(length(sub)>1)
         for j=2:length(sub)
-        same_subject_set = intersect(same_subject_set,find(tripcomp_1_sub(:,sub(j))));
+            [x,y,z] = find(tripcomp_1_sub(:,sub(j)));
+            same_subject_set = intersect(same_subject_set,x);
         end
     end
     if(~isempty(same_subject_set))
@@ -31,10 +42,12 @@ for i=1:num_components_iter1
     
     %verb
     candidate_set_verb=[];
-    same_verb_set=find(tripcomp_1_verb(:,verb(1)));
+    [x,y,z] = find(tripcomp_1_verb(:,verb(1)));
+    same_verb_set=x;
     if(length(verb)>1)
         for j=2:length(verb)
-        same_verb_set = intersect(same_verb_set,find(tripcomp_1_verb(:,verb(j))));
+            [x,y,z] = find(tripcomp_1_verb(:,verb(j)));
+            same_verb_set = intersect(same_verb_set,x);
         end
     end
     if(~isempty(same_verb_set))
@@ -45,10 +58,12 @@ for i=1:num_components_iter1
     
     %obj
     candidate_set_obj=[];
-    same_object_set=find(tripcomp_1_obj(:,obj(1)));
+    [x,y,z] = find(tripcomp_1_obj(:,obj(1)));
+    same_object_set=x;
     if(length(obj)>1)
         for j=2:length(obj)
-        same_object_set = intersect(same_object_set,find(tripcomp_1_obj(:,obj(j))));
+            [x,y,z] = find(tripcomp_1_obj(:,obj(j)));
+            same_object_set = intersect(same_object_set,x);
         end
     end
     if(~isempty(same_object_set))
@@ -59,7 +74,28 @@ for i=1:num_components_iter1
     
     final_candidate_set = intersect(intersect(candidate_set_sub,candidate_set_verb),candidate_set_obj);
     final_candidate_set = setdiff(final_candidate_set,1:i);
-    count = count+length(final_candidate_set);
+%     count = count+length(final_candidate_set);
+    candidate_subs=[];
+    candidate_verb=[];
+    candidate_obj=[];
+    for k =1:length(final_candidate_set)
+        [x,y,z]=find(tripcomp_1_sub(final_candidate_set(k),:));
+        candidate_sub=union(y,sub);
+        candidate_sub_words = unique_sub(candidate_sub);
+        tripcomp_2_sub(count,candidate_subs)=1;
+        [x,y,z]=find(tripcomp_1_verb(final_candidate_set(k),:));
+        candidate_verb=union(y,verb);
+        candidate_verb_words = unique_verb(candidate_verb);
+        tripcomp_2_verb(count,candidate_verb)=1;
+        [x,y,z]=find(tripcomp_1_obj(final_candidate_set(k),:));
+        candidate_obj=union(y,obj);
+        candidate_obj_words = unique_obj(candidate_obj);
+        tripcomp_2_obj(count,candidate_obj)=1;
+        count=count+1;
+    end
+    
+    
+%     tripcomp_2_sub = 
 %     clear candidate_set_sub candidate_set_verb candidate_set_obj common_context_set
     %Calculate cost of merge
 %     
