@@ -4,7 +4,7 @@
 %     triplets{i,1} = sub{i}; 
 %     triplets{i,2} = verb{i};
 %     triplets{i,3} = obj{i};
-% end
+% end  
 clear all; clc;
 load triplets.mat; load subjects.mat; load verbs.mat; load objects.mat;
 ns = length(sub);
