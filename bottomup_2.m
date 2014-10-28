@@ -75,7 +75,7 @@ for i=1:num_components_iter1
     final_candidate_set = intersect(intersect(candidate_set_sub,candidate_set_verb),candidate_set_obj);
     final_candidate_set = setdiff(final_candidate_set,1:i);
 %     count = count+length(final_candidate_set);
-    candidate_subs=[];
+    candidate_sub=[];
     candidate_verb=[];
     candidate_obj=[];
     
