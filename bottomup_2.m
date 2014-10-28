@@ -78,11 +78,12 @@ for i=1:num_components_iter1
     candidate_subs=[];
     candidate_verb=[];
     candidate_obj=[];
+    
     for k =1:length(final_candidate_set)
         [x,y,z]=find(tripcomp_1_sub(final_candidate_set(k),:));
         candidate_sub=union(y,sub);
         candidate_sub_words = unique_sub(candidate_sub);
-        tripcomp_2_sub(count,candidate_subs)=1;
+        tripcomp_2_sub(count,candidate_sub)=1;
         [x,y,z]=find(tripcomp_1_verb(final_candidate_set(k),:));
         candidate_verb=union(y,verb);
         candidate_verb_words = unique_verb(candidate_verb);
