@@ -16,13 +16,15 @@ for i=1:num_components_iter1
     [x,y,z]=find(tripcomp_1_obj(i,:));
     obj=y;
     obj_words = unique_obj(obj);
-   
+%    if(length(sub)>50 || length(verb)>50 || length(obj)>50)
+%        continue;
+%    end
     [x,y,z] = find(tripcomp_1_sub(:,sub));
-    sub_set=x;
+    sub_set=unique(x);
     [x,y,z] = find(tripcomp_1_verb(:,verb));
-    verb_set=x;
+    verb_set=unique(x);
     [x,y,z] = find(tripcomp_1_obj(:,obj));
-    obj_set= x;
+    obj_set= unique(x);
     %sub
     candidate_set_sub=[];
     common_context_set=[];
@@ -80,19 +82,52 @@ for i=1:num_components_iter1
     candidate_obj=[];
     
     for k =1:length(final_candidate_set)
+         
         [x,y,z]=find(tripcomp_1_sub(final_candidate_set(k),:));
         candidate_sub=union(y,sub);
         candidate_sub_words = unique_sub(candidate_sub);
-        tripcomp_2_sub(count,candidate_sub)=1;
+        
         [x,y,z]=find(tripcomp_1_verb(final_candidate_set(k),:));
         candidate_verb=union(y,verb);
         candidate_verb_words = unique_verb(candidate_verb);
-        tripcomp_2_verb(count,candidate_verb)=1;
+        
         [x,y,z]=find(tripcomp_1_obj(final_candidate_set(k),:));
         candidate_obj=union(y,obj);
         candidate_obj_words = unique_obj(candidate_obj);
-        tripcomp_2_obj(count,candidate_obj)=1;
-        count=count+1;
+        
+        %Find if the component already exists
+        [x,y,z] = find(tripcomp_2_sub(:,candidate_sub(1)));
+        same_subject_set= x;
+        if(length(candidate_sub)>1)
+            for j=2:length(candidate_sub)
+                [x,y,z] = find(tripcomp_2_sub(:,candidate_sub(j)));
+                same_subject_set = intersect(same_subject_set,x);
+            end
+        end
+        [x,y,z] = find(tripcomp_2_obj(:,candidate_obj(1)));
+        same_object_set= x;
+        if(length(candidate_obj)>1)
+            for j=2:length(candidate_obj)
+                [x,y,z] = find(tripcomp_2_obj(:,candidate_obj(j)));
+                same_object_set = intersect(same_object_set,x);
+            end
+        end
+        [x,y,z] = find(tripcomp_2_verb(:,candidate_verb(1)));
+        same_verb_set= x;
+        if(length(candidate_verb)>1)
+            for j=2:length(candidate_verb)
+                [x,y,z] = find(tripcomp_2_verb(:,candidate_verb(j)));
+                same_verb_set = intersect(same_verb_set,x);
+            end
+        end
+        if(~isempty(intersect(intersect(same_subject_set,same_object_set),same_verb_set)))
+            continue;
+        else
+             tripcomp_2_sub(count,candidate_sub)=1;
+             tripcomp_2_verb(count,candidate_verb)=1;
+             tripcomp_2_obj(count,candidate_obj)=1;
+             count=count+1;
+        end
     end
     
     

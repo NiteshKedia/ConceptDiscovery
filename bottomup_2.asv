@@ -1,4 +1,4 @@
-count=0;
+count=1;
 num_components_iter1=size(tripcomp_1_sub,1);
 tripcomp_2_sub = sparse(0,length(unique_sub));
 tripcomp_2_verb =sparse(0,length(unique_verb));
@@ -9,17 +9,22 @@ for i=1:num_components_iter1
     i
     [x,y,z]=find(tripcomp_1_sub(i,:));
     sub=y;
+    sub_words = unique_sub(sub);
     [x,y,z]=find(tripcomp_1_verb(i,:));
     verb=y;
+    verb_words= unique_verb(verb);
     [x,y,z]=find(tripcomp_1_obj(i,:));
     obj=y;
-   
+    obj_words = unique_obj(obj);
+%    if(length(sub)>50 || length(verb)>50 || length(obj)>50)
+%        continue;
+%    end
     [x,y,z] = find(tripcomp_1_sub(:,sub));
-    sub_set=x;
+    sub_set=unique(x);
     [x,y,z] = find(tripcomp_1_verb(:,verb));
-    verb_set=x;
+    verb_set=unique(x);
     [x,y,z] = find(tripcomp_1_obj(:,obj));
-    obj_set= x;
+    obj_set= unique(x);
     %sub
     candidate_set_sub=[];
     common_context_set=[];
@@ -71,19 +76,56 @@ for i=1:num_components_iter1
     
     final_candidate_set = intersect(intersect(candidate_set_sub,candidate_set_verb),candidate_set_obj);
     final_candidate_set = setdiff(final_candidate_set,1:i);
-    count = count+length(final_candidate_set);
-    candidate_subs=[];
+%     count = count+length(final_candidate_set);
+    candidate_sub=[];
     candidate_verb=[];
     candidate_obj=[];
+    
     for k =1:length(final_candidate_set)
+         
         [x,y,z]=find(tripcomp_1_sub(final_candidate_set(k),:));
-        candidate_subs=union(candidate_subs,sub);
-        tripcomp_2_sub(count,)
-        [x,y,z]=find(tripcomp_1_verb(final_candidate_set(k),:));
-        candidate_verb=union(candidate_verb,sub);
-        [x,y,z]=find(tripcomp_1_obj(final_candidate_set(k),:));
-        candidate_obj=union(candidate_obj,sub);
+        candidate_sub=union(y,sub);
+        candidate_sub_words = unique_sub(candidate_sub);
         
+        [x,y,z]=find(tripcomp_1_verb(final_candidate_set(k),:));
+        candidate_verb=union(y,verb);
+        candidate_verb_words = unique_verb(candidate_verb);
+        
+        [x,y,z]=find(tripcomp_1_obj(final_candidate_set(k),:));
+        candidate_obj=union(y,obj);
+        candidate_obj_words = unique_obj(candidate_obj);
+        
+        %Find if the component already exists
+        [x,y,z] = find(tripcomp_2_sub(:,candidate_sub(1)));
+        same_subject_set= x;
+        if(length(candidate_sub)>1)
+            for j=2:length(sub)
+                [x,y,z] = find(tripcomp_2_sub(:,candidate_sub(j)));
+                same_subject_set = intersect(same_subject_set,x);
+            end
+        end
+        if(isempty(candidate_sub))
+            countinue;
+        else
+            [x,y,z] = find(tripcomp_2_obj(:,candidate_obj(1)));
+            same_object_set= x;
+            if(length(candidate_obj)>1)
+                for j=2:length(sub)
+                    [x,y,z] = find(tripcomp_2_obj(:,candidate_obj(j)));
+                    same_object_set = intersect(same_object_set,x);
+                end
+            end
+            
+        end
+        
+        
+        
+        tripcomp_2_sub(count,candidate_sub)=1;
+        
+        tripcomp_2_verb(count,candidate_verb)=1;
+        
+        tripcomp_2_obj(count,candidate_obj)=1;
+        count=count+1;
     end
     
     
