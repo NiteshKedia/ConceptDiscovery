@@ -1,11 +1,11 @@
 %BOTTOM UP APRIORI %First Iteration
 
-% unique_triplet_annotated = zeros(length(unique_triplets),3);
-% for i = 1:length(unique_triplets)
-%     unique_triplet_annotated(i,:) = [find(ismember(unique_sub,unique_triplets(i,1))) 
-%                                         find(ismember(unique_verb,unique_triplets(i,2)))
-%                                                find(ismember(unique_obj,unique_triplets(i,3))) ];
-% end
+unique_triplet_annotated = zeros(length(unique_triplets),3);
+for i = 1:length(unique_triplets)
+    unique_triplet_annotated(i,:) = [find(ismember(unique_sub,unique_triplets(i,1))) 
+                                        find(ismember(unique_verb,unique_triplets(i,2)))
+                                               find(ismember(unique_obj,unique_triplets(i,3))) ];
+end
 
 [unique_subverb,~,ind] = unique(unique_triplet_annotated(:,[1,2]),'rows');
 freq_unique_data = histc(ind,1:size(unique_subverb,1));
