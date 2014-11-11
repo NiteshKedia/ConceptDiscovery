@@ -7,7 +7,7 @@ no= length(unique_obj);
 subject_verb = zeros(ns,nv);
 for i=1:length(unique_sub)
     i
-    related_verbs = unique_triplets(ismember(unique_triplets(:,1),unique_sub(i)),2);
+    related_verbs = triplets(ismember(triplets(:,1),unique_sub(i)),2);
     [unique_data,junk,ind] = unique(related_verbs);
     freq_unique_data = histc(ind,1:numel(unique_data));
     for j=1:length(unique_data)
@@ -16,23 +16,10 @@ for i=1:length(unique_sub)
     end
 end
 
-% subject_object = zeros(ns,no);
-% for i=1:length(unique_sub)
-%     i
-%     related_objs = unique_triplets(ismember(unique_triplets(:,1),unique_sub(i)),3);
-%     [unique_data,junk,ind] = unique(related_objs);
-%     freq_unique_data = histc(ind,1:numel(unique_data));
-%     for j=1:length(unique_data)
-%        index = find(ismember(unique_obj,unique_data(j)));
-%        subject_object(i,index) = freq_unique_data(j);
-%     end
-% end
-
-
 verb_subject = zeros(nv,ns);
 for i=1:length(unique_verb)
     i
-    related_subs = unique_triplets(ismember(unique_triplets(:,2),unique_verb(i)),1);
+    related_subs = triplets(ismember(triplets(:,2),unique_verb(i)),1);
     [unique_data,junk,ind] = unique(related_subs);
     freq_unique_data = histc(ind,1:numel(unique_data));
     for j=1:length(unique_data)
@@ -43,7 +30,7 @@ end
 verb_object = zeros(nv,no);
 for i=1:length(unique_verb)
     i
-    related_objs = unique_triplets(ismember(unique_triplets(:,2),unique_verb(i)),3);
+    related_objs = triplets(ismember(triplets(:,2),unique_verb(i)),3);
     [unique_data,junk,ind] = unique(related_objs);
     freq_unique_data = histc(ind,1:numel(unique_data));
     for j=1:length(unique_data)
@@ -52,22 +39,10 @@ for i=1:length(unique_verb)
     end
 end
 
-% 
-% object_subject = zeros(no,ns);
-% for i=1:length(unique_obj)
-%     i
-%     related_sub = unique_triplets(ismember(unique_triplets(:,3),unique_obj(i)),1);
-%     [unique_data,junk,ind] = unique(related_sub);
-%     freq_unique_data = histc(ind,1:numel(unique_data));
-%     for j=1:length(unique_data)
-%        index = find(ismember(unique_sub,unique_data(j)));
-%        object_subject(i,index) = freq_unique_data(j);
-%     end
-% end
 object_verb = zeros(no,nv);
 for i=1:length(unique_obj)
     i
-    related_verb = unique_triplets(ismember(unique_triplets(:,3),unique_obj(i)),2);
+    related_verb = triplets(ismember(triplets(:,3),unique_obj(i)),2);
     [unique_data,junk,ind] = unique(related_verb);
     freq_unique_data = histc(ind,1:numel(unique_data));
     for j=1:length(unique_data)
@@ -128,9 +103,9 @@ end
 
 
 % 
-% index = find(ismember(unique_sub,'allah'))
-% test = [sub_similarity_verb_overlap(1:index,index)'  sub_similarity_verb_overlap(index,index+1:end)];
-% [xsorted is] = sort(test,'ascend');
+% index = find(ismember(unique_sub,'sudan'))
+% test = [sub_similarity_verb_overlap(index,:)];
+% [xsorted is] = sort(test,'descend');
 % unique_sub(is(1:10))
 % 
 % 
@@ -149,3 +124,5 @@ end
 % test = [sub_similarity_verb_overlap(index,:)];
 % [xsorted is] = sort(test,'descend');
 % unique_sub(is(1:10))
+
+bottomup_1

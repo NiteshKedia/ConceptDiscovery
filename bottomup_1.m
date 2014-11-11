@@ -1,12 +1,5 @@
 %BOTTOM UP APRIORI %First Iteration
 
-unique_triplet_annotated = zeros(length(unique_triplets),3);
-for i = 1:length(unique_triplets)
-    unique_triplet_annotated(i,:) = [find(ismember(unique_sub,unique_triplets(i,1))) 
-                                        find(ismember(unique_verb,unique_triplets(i,2)))
-                                               find(ismember(unique_obj,unique_triplets(i,3))) ];
-end
-
 [unique_subverb,~,ind] = unique(unique_triplet_annotated(:,[1,2]),'rows');
 freq_unique_data = histc(ind,1:size(unique_subverb,1));
 relevant_index = find(freq_unique_data>1);
@@ -58,6 +51,32 @@ for i=1:length(relevant_unique_subobj)
     
 end
 count=count+i;
+% 
+for i=1:length(tripcomp_1_sub)
+    [x,y,z]=find(tripcomp_1_sub(i,:));
+    sub_words = unique_sub(y);
+    [x,y,z]=find(tripcomp_1_verb(i,:));
+    verb_words= unique_verb(y);
+    [x,y,z]=find(tripcomp_1_obj(i,:));
+    obj_words = unique_obj(y);
+    tripcom1{i,1} = sub_words;
+    tripcom1{i,2} = verb_words;
+    tripcom1{i,3} = obj_words;
+    
+end
 
 
+% serialize cell array into string
+    firstlevelGT = cell(length(tripcom1),3);
+    for i = 1 : length(tripcom1)
+        for j = 1 : 3
+            if (length(tripcom1{i,j}) > 1)
+                str = strjoin(tripcom1{i,j}',';');
+                firstlevelGT{i,j} = str;
+            else
+                firstlevelGT{i,j} = tripcom1{i,j};
+            end
+        end
+    end
 
+    bottomup_2

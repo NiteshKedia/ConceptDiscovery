@@ -100,6 +100,29 @@ index_junk_objs = find(ismember(triplets(:,3),junk_obj));
 final_index_junk = unique([index_junk_subs ;index_junk_verbs;index_junk_objs]);
 triplets(final_index_junk,:)=[];
 
+new_triplets={};
+j=1;
+for i=1:length(triplets)
+    i
+    if(~isequal(triplets(i,1),triplets(i,3)))
+        new_triplets(j,:) = triplets(i,:);
+        j=j+1;
+    end
+    
+end
+triplets=new_triplets;
+unique_triplets = uniqueRowsCA(triplets, 'rows');
+unique_sub = unique(unique_triplets(:,1));
+unique_verb = unique(unique_triplets(:,2));
+unique_obj = unique(unique_triplets(:,3));
+
+unique_triplet_annotated = zeros(length(unique_triplets),3);
+for i = 1:length(unique_triplets)
+    unique_triplet_annotated(i,:) = [find(ismember(unique_sub,unique_triplets(i,1))) 
+                                        find(ismember(unique_verb,unique_triplets(i,2)))
+                                               find(ismember(unique_obj,unique_triplets(i,3))) ];
+end
+
 % [unique_data,junk,ind] = unique(unique_triplets(:,2));
 % freq_unique_data = histc(ind,1:numel(unique_data));
 % [xsorted is] = sort(freq_unique_data,'descend');
@@ -114,7 +137,7 @@ triplets(final_index_junk,:)=[];
 % frequent_objs = [is,xsorted];
 
 
-%Tensor
+% %Tensor
 % ns = length(unique_sub);
 % nv = length(unique_verb);
 % no = length(unique_obj);
@@ -122,13 +145,13 @@ triplets(final_index_junk,:)=[];
 % nonzeros = zeros(nt,3);
 % for i = 1 : nt
 %    
-%     [~, sloc] = ismember(unique_sub, unique_triplets{i,1});
+%     [~, sloc] = ismember(unique_sub, triplets{i,1});
 %     nonzeros(i,1) = find(sloc);
 %     
-%     [~, vloc] = ismember(unique_verb, unique_triplets{i,2});
+%     [~, vloc] = ismember(unique_verb, triplets{i,2});
 %     nonzeros(i,2) = find(vloc);
 %     
-%     [~, oloc] = ismember(unique_obj, unique_triplets{i,3});
+%     [~, oloc] = ismember(unique_obj, triplets{i,3});
 %     nonzeros(i,3) = find(oloc);
 % end
 % X = sptensor(nonzeros,1);   
@@ -136,10 +159,31 @@ triplets(final_index_junk,:)=[];
 % S = P.U{1};
 % V = P.U{2};
 % O = P.U{3};
-
-% save SOV_full.mat
-
-
-
-
+% 
+% % save SOV_full.mat
+% 
+% sub_similarity_tensor = zeros(ns,ns);
+% sub_similarity_tensor = pdist(S,'euclidean');
+% sub_similarity_tensor = squareform(sub_similarity_tensor);
+% verb_similarity_tensor = zeros(nv,nv);
+% verb_similarity_tensor = pdist(V,'euclidean');
+% verb_similarity_tensor = squareform(verb_similarity_tensor);
+% obj_similarity_tensor = zeros(no,no);
+% obj_similarity_tensor = pdist(O,'euclidean');
+% obj_similarity_tensor = squareform(obj_similarity_tensor);
+% 
+% index = find(ismember(unique_sub,'vehicle'))
+% test = [sub_similarity_tensor(index,:)];
+% [xsorted is] = sort(test,'ascend');
+% unique_sub(is(1:10))
+% 
+% index = find(ismember(unique_verb,'attack'))
+% test = [verb_similarity_tensor(index,:)];
+% [xsorted is] = sort(test,'descend');
+% unique_verb(is(1:10))
+% 
+% index = find(ismember(unique_obj,'vehicle'))
+% test = [obj_similarity_tensor(index,:)];
+% [xsorted is] = sort(test,'descend');
+% unique_obj(is(1:10))
 
