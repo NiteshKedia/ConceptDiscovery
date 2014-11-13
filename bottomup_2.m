@@ -1,3 +1,5 @@
+display('Second Started');
+display('**********************************');
 count=1;
 num_components_iter1=size(tripcomp_1_sub,1);
 tripcomp_2_sub = sparse(0,length(unique_sub));
@@ -7,7 +9,6 @@ tripcomp_2_obj =sparse(0,length(unique_obj));
 
 for i=1:num_components_iter1
     i
-    
     % Find sub-verb-objs in a component
     [x,y,z]=find(tripcomp_1_sub(i,:));
     sub=y;
@@ -46,8 +47,8 @@ for i=1:num_components_iter1
             
             %Prune while merging
             [final_sub_intersection,final_verb_intersection,final_obj_intersection] ...
-                = pruneMerge(unique_sub,unique_verb,unique_obj,sub,candidate_sub,verb,candidate_verb,obj,candidate_obj,...
-                sub_similarity_verb_overlap,verb_similarity_subobj_overlap,obj_similarity_verb_overlap);
+                = pruneMerge_cooccurence(unique_sub,unique_verb,unique_obj,sub,candidate_sub,verb,candidate_verb,obj,candidate_obj,...
+                sub_similarity_verb_overlap,verb_similarity_subobj_overlap,obj_similarity_verb_overlap,pmi_subverb,pmi_verbobj);
             
             if(length(final_sub_intersection)==1 && length(final_verb_intersection)==1 && length(final_obj_intersection)==1)
                 continue;
@@ -77,8 +78,8 @@ for i=1:num_components_iter1
                         
                         %Prune while merging
                         [final_sub_intersection2,final_verb_intersection2,final_obj_intersection2] ...
-                            = pruneMerge(unique_sub,unique_verb,unique_obj,final_sub_intersection,final_candidate_sub,final_verb_intersection,final_candidate_verb,final_obj_intersection,final_candidate_obj,...
-                            sub_similarity_verb_overlap,verb_similarity_subobj_overlap,obj_similarity_verb_overlap);
+                            = pruneMerge_cooccurence(unique_sub,unique_verb,unique_obj,final_sub_intersection,final_candidate_sub,final_verb_intersection,final_candidate_verb,final_obj_intersection,final_candidate_obj,...
+                            sub_similarity_verb_overlap,verb_similarity_subobj_overlap,obj_similarity_verb_overlap,pmi_subverb,pmi_verbobj);
                         
                         if(length(final_sub_intersection2)==1 && length(final_verb_intersection2)==1 && length(final_obj_intersection2)==1)
                             continue;
@@ -115,7 +116,7 @@ end
 
 
 %Make the GTs view-able
-tripcom2_test={};
+tripcom2={};
 for i=1:length(tripcomp_2_sub)
     [x,y,z]=find(tripcomp_2_sub(i,:));
     sub_words = unique_sub(y);
@@ -123,21 +124,24 @@ for i=1:length(tripcomp_2_sub)
     verb_words= unique_verb(y);
     [x,y,z]=find(tripcomp_2_obj(i,:));
     obj_words = unique_obj(y);
-    tripcom2_test{i,1} = sub_words;
-    tripcom2_test{i,2} = verb_words;
-    tripcom2_test{i,3} = obj_words;
+    tripcom2{i,1} = sub_words;
+    tripcom2{i,2} = verb_words;
+    tripcom2{i,3} = obj_words;
     
 end
 
 % Serialise the GTs
-secondlevelGT_test = cell(length(tripcom2_test),3);
-for i = 1 : length(tripcom2_test)
+secondlevelGT = cell(length(tripcom2),3);
+for i = 1 : length(tripcom2)
     for j = 1 : 3
-        if (length(tripcom2_test{i,j}) > 1)
-            str = strjoin(tripcom2_test{i,j}',';');
-            secondlevelGT_test{i,j} = str;
+        if (length(tripcom2{i,j}) > 1)
+            str = strjoin(tripcom2{i,j}',';');
+            secondlevelGT{i,j} = str;
         else
-            secondlevelGT_test{i,j} = tripcom2_test{i,j};
+            secondlevelGT{i,j} = tripcom2{i,j};
         end
     end
 end
+display('Second Finished');
+display('**********************************');
+% bottomup_3
