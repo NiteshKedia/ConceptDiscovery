@@ -1,0 +1,90 @@
+display('Bottom Up Started');
+display('**********************************');
+
+tripcomp_current_sub = tripcomp_sub_2;
+tripcomp_current_verb = tripcomp_verb_2;
+tripcomp_current_obj = tripcomp_obj_2;
+
+for iterations=1:5
+    
+	display(['Iteration ' , num2str(iterations) , ' started']);
+    count=1;
+   
+    tripcomp_next_sub = sparse(0,length(unique_sub));
+    tripcomp_next_verb =sparse(0,length(unique_verb));
+    tripcomp_next_obj =sparse(0,length(unique_obj));
+    num_iterations=size(tripcomp_current_sub,1);
+    for i=1:num_iterations
+        i
+        % Find sub-verb-objs in a component
+        [x,y,z]=find(tripcomp_current_sub(i,:));
+        sub=y;
+        sub_words = unique_sub(sub);
+        [x,y,z]=find(tripcomp_current_verb(i,:));
+        verb=y;
+        verb_words= unique_verb(verb);
+        [x,y,z]=find(tripcomp_current_obj(i,:));
+        obj=y;
+        obj_words = unique_obj(obj);
+        
+        %Finding the common context
+        final_candidate_set = findCommonContextSet(sub,verb,obj,tripcomp_current_sub,tripcomp_current_verb,tripcomp_current_obj);
+        final_candidate_set = setdiff(final_candidate_set,1:i);
+        candidate_sub=[];
+        candidate_verb=[];
+        candidate_obj=[];
+        
+        if(length(final_candidate_set)>0)
+            %Creating components
+            for k =1:length(final_candidate_set)
+                
+                [x,y,z]=find(tripcomp_current_sub(final_candidate_set(k),:));
+                candidate_sub=y;
+                candidate_sub_words = unique_sub(y);
+                
+                [x,y,z]=find(tripcomp_current_verb(final_candidate_set(k),:));
+                candidate_verb=y;
+                candidate_verb_words = unique_verb(y);
+                
+                [x,y,z]=find(tripcomp_current_obj(final_candidate_set(k),:));
+                candidate_obj=y;
+                candidate_obj_words = unique_obj(y);
+                
+                
+                %Prune while merging
+                [final_sub_intersection,final_verb_intersection,final_obj_intersection] ...
+                    = pruneMerge_cooccurence(unique_sub,unique_verb,unique_obj,sub,candidate_sub,verb,candidate_verb,obj,candidate_obj,...
+                    sub_similarity_verb_overlap,verb_similarity_subobj_overlap,obj_similarity_verb_overlap,pmi_subverb,pmi_verbobj);
+                
+                if((length(final_sub_intersection)==0 || length(final_verb_intersection)==0 || length(final_obj_intersection)==0)||...
+                        (length(final_sub_intersection)==1 && length(final_verb_intersection)==1 && length(final_obj_intersection)==1))
+                    continue;
+                else
+                    [ tripcomp_next_sub,tripcomp_next_verb,tripcomp_next_obj,count ] = removeDuplicates( unique_sub,unique_verb,unique_obj,...
+                        sub_similarity_verb_overlap,verb_similarity_subobj_overlap,obj_similarity_verb_overlap,...
+                        final_sub_intersection,final_verb_intersection,final_obj_intersection,...
+                        tripcomp_next_sub,tripcomp_next_verb,tripcomp_next_obj,pmi_subverb,pmi_verbobj,count);
+                end
+            end
+        else
+            [ tripcomp_next_sub,tripcomp_next_verb,tripcomp_next_obj,count ] = removeDuplicates( unique_sub,unique_verb,unique_obj,...
+                sub_similarity_verb_overlap,verb_similarity_subobj_overlap,obj_similarity_verb_overlap,...
+                sub,verb,obj,...
+                tripcomp_next_sub,tripcomp_next_verb,tripcomp_next_obj,pmi_subverb,pmi_verbobj,count);
+        end
+        
+    end
+    eval(['tripcomp_sub_' num2str(iterations) ' = tripcomp_next_sub;']);
+    eval(['tripcomp_verb_' num2str(iterations) ' = tripcomp_next_verb;']);
+    eval(['tripcomp_obj_' num2str(iterations) ' = tripcomp_next_obj;']);
+    eval(['GT_' num2str(iterations) ' = calcStatistics(tripcomp_next_sub,tripcomp_next_verb,tripcomp_next_obj,unique_sub,unique_verb,unique_obj,unique_triplet_annotated,sub_similarity_verb_overlap,verb_similarity_subobj_overlap,obj_similarity_verb_overlap);']);
+
+    display(['Iteration ' , num2str(iterations) , ' ended']);
+    display('**********************************');
+    tripcomp_current_sub=tripcomp_next_sub;
+    tripcomp_current_verb=tripcomp_next_verb;
+    tripcomp_current_obj=tripcomp_next_obj;
+end
+
+display('BottomUp Finished');
+display('**********************************');

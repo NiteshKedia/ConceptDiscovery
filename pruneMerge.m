@@ -41,7 +41,7 @@ function [ final_sub_intersection,final_verb_intersection,final_obj_intersection
                     for l=1:length(sub_intersection)
                         test = [sub_similarity_verb_overlap(sub_intersection(l),:)];
                         [xsorted is] = sort(test,'descend');
-                        if(~isempty(find(is(1:50)==sub_diff(m))))
+                        if(~isempty(find(is(1:100)==sub_diff(m))))
                             final_sub_intersection = union(final_sub_intersection,sub_diff(m));
                             current_subs = unique_sub(final_sub_intersection);
                         end
@@ -58,7 +58,7 @@ function [ final_sub_intersection,final_verb_intersection,final_obj_intersection
                     for l=1:length(verb_intersection)
                         test = [verb_similarity_subobj_overlap(verb_intersection(l),:)];
                         [xsorted is] = sort(test,'descend');
-                        if(~isempty(find(is(1:50)==verb_diff(m))))
+                        if(~isempty(find(is(1:100)==verb_diff(m))))
                             final_verb_intersection = union(final_verb_intersection,verb_diff(m));
                             current_verb = unique_verb(final_verb_intersection);
                         end
@@ -72,7 +72,7 @@ function [ final_sub_intersection,final_verb_intersection,final_obj_intersection
                     for l=1:length(obj_intersection)
                         test = [obj_similarity_verb_overlap(obj_intersection(l),:)];
                         [xsorted is] = sort(test,'descend');
-                        if(~isempty(find(is(1:50)==obj_diff(m))))
+                        if(~isempty(find(is(1:100)==obj_diff(m))))
                             final_obj_intersection = union(final_obj_intersection,obj_diff(m));
                             current_objs = unique_obj(final_obj_intersection);
                         end

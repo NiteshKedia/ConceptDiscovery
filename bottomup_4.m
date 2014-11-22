@@ -49,7 +49,8 @@ i
                 = pruneMerge_cooccurence(unique_sub,unique_verb,unique_obj,sub,candidate_sub,verb,candidate_verb,obj,candidate_obj,...
                 sub_similarity_verb_overlap,verb_similarity_subobj_overlap,obj_similarity_verb_overlap,pmi_subverb,pmi_verbobj);
         
-        if(length(final_sub_intersection)==1 && length(final_verb_intersection)==1 && length(final_obj_intersection)==1)
+        if((length(final_sub_intersection)==0 || length(final_verb_intersection)==0 || length(final_obj_intersection)==0)||...
+            (length(final_sub_intersection)==1 && length(final_verb_intersection)==1 && length(final_obj_intersection)==1))
             continue;
         else
             [x,y,z] = find(tripcomp_4_sub(:,final_sub_intersection));
@@ -58,8 +59,8 @@ i
             final_verb_set=unique(x);
             [x,y,z] = find(tripcomp_4_obj(:,final_obj_intersection));
             final_obj_set= unique(x);
-            final_candidate_set2 = intersect(intersect(final_sub_set,final_verb_set),final_obj_set);
-            
+%             final_candidate_set2 = intersect(intersect(final_sub_set,final_verb_set),final_obj_set);
+            final_candidate_set2 = findCommonContextSet(final_sub_intersection,final_verb_intersection,final_obj_intersection,tripcomp_4_sub,tripcomp_4_verb,tripcomp_4_obj);
             if(length(final_candidate_set2)~=0)
                 for l=1:length(final_candidate_set2)
                     [x,y,z]=find(tripcomp_4_sub(final_candidate_set2(l),:));
@@ -80,7 +81,8 @@ i
                 = pruneMerge_cooccurence(unique_sub,unique_verb,unique_obj,sub,candidate_sub,verb,candidate_verb,obj,candidate_obj,...
                 sub_similarity_verb_overlap,verb_similarity_subobj_overlap,obj_similarity_verb_overlap,pmi_subverb,pmi_verbobj);
                     
-                    if(length(final_sub_intersection2)==1 && length(final_verb_intersection2)==1 && length(final_obj_intersection2)==1)
+                    if((length(final_sub_intersection2)==0 || length(final_verb_intersection2)==0 || length(final_obj_intersection2)==0)||...
+            (length(final_sub_intersection)==1 && length(final_verb_intersection)==1 && length(final_obj_intersection)==1))
                         continue;
                     else
                         tripcomp_4_sub(final_candidate_set2(l),:) = 0;
@@ -141,4 +143,4 @@ for i = 1 : length(tripcom4)
 end
 display('Fourth Finished');
 display('**********************************');
-% bottomup_5
+bottomup_5
