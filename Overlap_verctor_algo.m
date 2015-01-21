@@ -124,5 +124,4 @@ end
 % test = [sub_similarity_verb_overlap(index,:)];
 % [xsorted is] = sort(test,'descend');
 % unique_sub(is(1:10))
-
-bottomup_1
+PMI

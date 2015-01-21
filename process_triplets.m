@@ -1,12 +1,12 @@
-load triplets_full.mat
-sub=triplets_full(:,1);
-verb=triplets_full(:,2);
-obj=triplets_full(:,3);
+% load triplets_full.mat
+% sub=triplets_full(:,1);
+% verb=triplets_full(:,2);
+% obj=triplets_full(:,3);
 %Handle Prepositions in sub,obj
 subject_indices_prepositions=find(ismember(sub,prepositions));
 object_indices_prepositions=find(ismember(obj,prepositions));
-sub_preposition = zeros(513592,1);
-obj_preposition = zeros(513592,1);
+sub_preposition = zeros(79586,1);
+obj_preposition = zeros(79586,1);
 sub_preposition(subject_indices_prepositions)=1;
 obj_preposition(object_indices_prepositions)=1;
 nonemptycells_sub_pobj = ~cellfun(@isempty,sub_pobj);
@@ -73,7 +73,7 @@ index_junk_objs = find(ismember(triplets(:,3),junk_objs));
 final_index_junk = unique([index_junk_subs ;index_junk_verbs;index_junk_objs]);
 triplets(final_index_junk,:)=[];
 
-unique_sub = unique(triplets(:,1));unique_verb = unique(triplets(:,2));unique_obj = unique(triplets(:,3));
+% unique_sub = unique(triplets(:,1));unique_verb = unique(triplets(:,2));unique_obj = unique(triplets(:,3));
 
 % unique_sub = unique_sub(frequent_subs(frequent_subs(:,2)>4,1));
 % unique_triplets = unique_triplets(find(ismember(unique_triplets(:,1),unique_sub)),:);
@@ -82,19 +82,19 @@ unique_sub = unique(triplets(:,1));unique_verb = unique(triplets(:,2));unique_ob
 % junk_verbs = unique_verb(frequent_verbs(frequent_verbs(:,2)<=3,1));
 % unique_verb = unique_verb(frequent_verbs(frequent_verbs(:,2)>3,1));
 % unique_triplets = unique_triplets(find(ismember(unique_triplets(:,2),unique_verb)),:);
-junk_sub={'''s';'0';'0rd';'a';'ab';'ablaj';'abu';'adl';'afp';'al';
+junk_sub={'''s';'0';'0rd';'a';'ab';'ablaj';'abu';'adl';'afp';'al';'be'
     'an';'ana';'ani';'ata';'atta';'ax';'b';'ba';'d';
     'da';'dah';'dahlan';'do';'go';'h';'i.e.';'ida';
     'ii';'iia';'iii';'ja';'mu';'lrb';'lsb';'ma';
     'myc';'mym';'nay';'no';'no.';'o';'osc';'pa';
     'plo';'qa';'qa';'qom';'qur';'ra';'rrb';'s';
     'sa';'sha';'shu';'so';'t';'u';'u0';'u0t';'ud';'v';'ye'};
-index_junk_subs = find(ismember(triplets(:,1),junk_subs));
+index_junk_subs = find(ismember(triplets(:,1),junk_sub));
 
-junk_verb = {'%';'''s';'b';'d';'da';'l';'o';'ye';'~'};
+junk_verb = {'%';'''s';'b';'d';'da';'l';'o';'ye';'~';'be'};
 index_junk_verbs = find(ismember(triplets(:,2),junk_verb));
 
-junk_obj = {'''s';'-';'0';'>';'a';'ab';'al';'an';'ax';'b';'ba';'do';'h';'km';'o';'qa';'so';'th';'tn';'u';'u0';'ye'};
+junk_obj = {'''s';'-';'0';'>';'a';'ab';'al';'an';'ax';'b';'be';'ba';'do';'h';'km';'o';'qa';'so';'th';'tn';'u';'u0';'ye'};
 index_junk_objs = find(ismember(triplets(:,3),junk_obj));
 
 final_index_junk = unique([index_junk_subs ;index_junk_verbs;index_junk_objs]);
@@ -122,7 +122,9 @@ for i = 1:length(unique_triplets)
                                         find(ismember(unique_verb,unique_triplets(i,2)))
                                                find(ismember(unique_obj,unique_triplets(i,3))) ];
 end
-
+unique_subverb = unique(unique_triplet_annotated(:,1:2), 'rows');
+unique_subobj = unique(unique_triplet_annotated(:,1:3), 'rows');
+unique_verbobj = unique(unique_triplet_annotated(:,2:3), 'rows');
 % [unique_data,junk,ind] = unique(unique_triplets(:,2));
 % freq_unique_data = histc(ind,1:numel(unique_data));
 % [xsorted is] = sort(freq_unique_data,'descend');

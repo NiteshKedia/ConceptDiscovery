@@ -53,3 +53,9 @@ end
 %     end
 % end
 
+for i =1:length(GT_4)
+    xlswrite('stories_concepts_iter4.xlsx',cellstr(GT_4{i,1}),1,strcat('A',num2str(i)));
+    xlswrite('stories_concepts_iter4.xlsx',cellstr(GT_4{i,2}),1,strcat('B',num2str(i)));
+    xlswrite('stories_concepts_iter4.xlsx',cellstr(GT_4{i,3}),1,strcat('C',num2str(i)));
+end
+
