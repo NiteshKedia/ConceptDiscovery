@@ -1,15 +1,15 @@
-num_components_iter=size(tripcomp_sub_2,1);
+num_components_iter=size(tripcomp_sub_1,1);
 
 tripcom={};
 for i=1:num_components_iter
     i
-    [x,y,z]=find(tripcomp_sub_2(i,:));
+    [x,y,z]=find(tripcomp_sub_1(i,:));
     sub=y;
     sub_words = unique_sub(y);
-    [x,y,z]=find(tripcomp_verb_2(i,:));
+    [x,y,z]=find(tripcomp_verb_1(i,:));
     verb=y;
     verb_words= unique_verb(y);
-    [x,y,z]=find(tripcomp_obj_2(i,:));
+    [x,y,z]=find(tripcomp_obj_1(i,:));
     obj=y;
     obj_words = unique_obj(y);
     tripcom{1} = sub_words;
@@ -22,16 +22,16 @@ for i=1:num_components_iter
     for j = 1 : 3
         if (length(tripcom{j}) > 1)
             str = strjoin(tripcom{j}',';');
-            GT2Stories{i,j} = str;
+            GT_1{i,j} = str;
         else
-            GT2Stories{i,j} = tripcom{j};
+            GT_1{i,j} = tripcom{j};
         end
     end
     %NUM of subject verb and objects
     ls = length(sub);lv = length(verb);lo = length(obj);
-    GT2Stories{i,4} = ls;
-    GT2Stories{i,5} = lv;
-    GT2Stories{i,6} = lo;
+    GT_1{i,4} = ls;
+    GT_1{i,5} = lv;
+    GT_1{i,6} = lo;
     %
     %     %Precision
     %     [X,Y,Z] = meshgrid(sub,verb,obj);
