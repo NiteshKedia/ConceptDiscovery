@@ -88,13 +88,13 @@ junk_sub={'''s';'0';'0rd';'a';'ab';'ablaj';'abu';'adl';'afp';'al';'be'
     'ii';'iia';'iii';'ja';'mu';'lrb';'lsb';'ma';
     'myc';'mym';'nay';'no';'no.';'o';'osc';'pa';
     'plo';'qa';'qa';'qom';'qur';'ra';'rrb';'s';
-    'sa';'sha';'shu';'so';'t';'u';'u0';'u0t';'ud';'v';'ye'};
+    'sa';'sha';'shu';'so';'t';'u';'u0';'u0t';'ud';'v';'ye';'`';'``'};
 index_junk_subs = find(ismember(triplets(:,1),junk_sub));
 
-junk_verb = {'%';'''s';'b';'d';'da';'l';'o';'ye';'~';'be'};
+junk_verb = {'%';'''s';'b';'d';'da';'l';'o';'ye';'~';'be';'`'};
 index_junk_verbs = find(ismember(triplets(:,2),junk_verb));
 
-junk_obj = {'''s';'-';'0';'>';'a';'ab';'al';'an';'ax';'b';'be';'ba';'do';'h';'km';'o';'qa';'so';'th';'tn';'u';'u0';'ye'};
+junk_obj = {'''s';'-';'0';'>';'a';'ab';'al';'an';'ax';'b';'be';'ba';'do';'h';'km';'o';'qa';'so';'th';'tn';'u';'u0';'ye';'0bn';'`'};
 index_junk_objs = find(ismember(triplets(:,3),junk_obj));
 
 final_index_junk = unique([index_junk_subs ;index_junk_verbs;index_junk_objs]);

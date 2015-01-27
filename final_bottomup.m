@@ -5,7 +5,7 @@ tripcomp_current_sub = tripcomp_sub_10;
 tripcomp_current_verb = tripcomp_verb_10;
 tripcomp_current_obj = tripcomp_obj_10;
 
-for iterations=11:15
+for iterations=11:12
     
     display(['Iteration ' , num2str(iterations) , ' started']);
     count=1;

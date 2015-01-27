@@ -35,7 +35,7 @@ if(~isempty(sub_intersection))
     for i=1:length(sub_intersection)
         [xsorted is] = sort(pmi_subverb(sub_intersection(i),:),'descend');
         xsorted(xsorted==0) = [];
-        is = is(1:min(1,length(xsorted)));
+        is = is(2:min(1,length(xsorted)));
         verb_intersection = union(verb_intersection, intersect(verb_union,is));
     end
 end
@@ -44,7 +44,7 @@ if(~isempty(obj_intersection))
     for i=1:length(obj_intersection)
         [xsorted is] = sort(pmi_verbobj(:,obj_intersection(i)),'descend');
         xsorted(xsorted==0) = [];
-        is = is(1:min(1,length(xsorted)));
+        is = is(2:min(1,length(xsorted)));
         verb_intersection = union(verb_intersection, intersect(verb_union,is));
     end
 end
@@ -53,7 +53,7 @@ if(~isempty(verb_intersection))
     for i=1:length(verb_intersection)
         [xsorted is] = sort(pmi_subverb(:,verb_intersection(i)),'descend');
         xsorted(xsorted==0) = [];
-        is = is(1:min(1,length(xsorted)));
+        is = is(2:min(1,length(xsorted)));
         sub_intersection = union(sub_intersection, intersect(sub_union,is));
     end
 end
@@ -65,7 +65,7 @@ if(~isempty(verb_intersection))
     for i=1:length(verb_intersection)
         [xsorted is] = sort(pmi_verbobj(verb_intersection(i),:),'descend');
         xsorted(xsorted==0) = [];
-        is = is(1:min(1,length(xsorted)));
+        is = is(2:min(1,length(xsorted)));
         obj_intersection = union(obj_intersection, intersect(obj_union,is));
     end
 end
@@ -116,7 +116,7 @@ if(length(sub_diff)~=0)
                 test = [sub_similarity(final_sub_intersection(l),:)];
                 [xsorted is] = sort(test,'descend');
                 xsorted(xsorted==0) = [];
-                if(~isempty(find(is(1:min(3,length(xsorted)))==sub_diff(m))))
+                if(~isempty(find(is(1:min(4,length(xsorted)))==sub_diff(m))))
                     final_sub_intersection = union(final_sub_intersection,sub_diff(m));
                     %                     current_subs = unique_sub(final_sub_intersection);
                     break;
@@ -134,7 +134,7 @@ if(length(verb_diff)~=0)
             for l=1:length(final_verb_intersection)
                 test = [verb_similarity(final_verb_intersection(l),:)];
                 [xsorted is] = sort(test,'descend');
-                if(~isempty(find(is(1:min(3,length(xsorted)))==verb_diff(m))))
+                if(~isempty(find(is(1:min(4,length(xsorted)))==verb_diff(m))))
                     final_verb_intersection = union(final_verb_intersection,verb_diff(m));
                     current_verb = unique_verb(final_verb_intersection);
                     break;
@@ -149,7 +149,7 @@ if(length(obj_diff)~=0)
             for l=1:length(final_obj_intersection)
                 test = [obj_similarity(final_obj_intersection(l),:)];
                 [xsorted is] = sort(test,'descend');
-                if(~isempty(find(is(1:min(3,length(xsorted)))==obj_diff(m))))
+                if(~isempty(find(is(1:min(4,length(xsorted)))==obj_diff(m))))
                     final_obj_intersection = union(final_obj_intersection,obj_diff(m));
                     current_objs = unique_obj(final_obj_intersection);
                     break;

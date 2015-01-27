@@ -1,11 +1,11 @@
 display('Bottom Up Started');
 display('**********************************');
 
-tripcomp_current_sub = tripcomp_sub_8;
-tripcomp_current_verb = tripcomp_verb_8;
-tripcomp_current_obj = tripcomp_obj_8;
+tripcomp_current_sub = tripcomp_sub_1;
+tripcomp_current_verb = tripcomp_verb_1;
+tripcomp_current_obj = tripcomp_obj_1;
 
-for iterations=9:10
+for iterations=3:5
     
     display(['Iteration ' , num2str(iterations) , ' started']);
     count=1;
